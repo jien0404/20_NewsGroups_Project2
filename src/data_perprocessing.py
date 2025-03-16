@@ -6,6 +6,7 @@ import pandas as pd
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
+from sklearn.model_selection import train_test_split
 
 def load_raw_data(root_dir):
     """
@@ -79,25 +80,43 @@ def preprocess_data(df):
     return df
 
 def main():
-    # Đường dẫn đến dữ liệu raw và nơi lưu dữ liệu đã xử lý
+    # Đường dẫn đến dữ liệu
     root_dir = './data/20_newsgroups'
-    output_file = './data/processed/20news_processed.csv'
+    processed_file = './data/processed/20news_processed.csv'
     
+    train_file = './data/processed/train.csv'
+    val_file = './data/processed/val.csv'
+    test_file = './data/processed/test.csv'
+    
+    # Load & xử lý dữ liệu
     print("Loading raw data...")
     df = load_raw_data(root_dir)
     print(f"Raw data loaded. Shape: {df.shape}")
-    
+
     print("Starting text preprocessing...")
     df = preprocess_data(df)
     print("Preprocessing complete. Sample processed text:")
     print(df[['clean_text', 'label']].head())
-    
+
     # Tạo thư mục processed nếu chưa có
-    os.makedirs(os.path.dirname(output_file), exist_ok=True)
-    
-    # Lưu dữ liệu đã xử lý
-    df[['clean_text', 'label']].to_csv(output_file, index=False)
-    print(f"Processed data saved to: {output_file}")
+    os.makedirs(os.path.dirname(processed_file), exist_ok=True)
+
+    # Lưu toàn bộ dữ liệu vào 20news_processed.csv
+    df.to_csv(processed_file, index=False)
+    print(f"Full processed data saved to: {processed_file}")
+
+    # Chia dữ liệu thành train, val, test (80-10-10)
+    train, temp = train_test_split(df, test_size=0.2, random_state=42, stratify=df['label'])
+    val, test = train_test_split(temp, test_size=0.5, random_state=42, stratify=temp['label'])
+
+    # Lưu các tệp train, val, test
+    train.to_csv(train_file, index=False)
+    val.to_csv(val_file, index=False)
+    test.to_csv(test_file, index=False)
+
+    print(f"Train data saved to: {train_file} (Size: {train.shape})")
+    print(f"Validation data saved to: {val_file} (Size: {val.shape})")
+    print(f"Test data saved to: {test_file} (Size: {test.shape})")
 
 if __name__ == '__main__':
     main()
