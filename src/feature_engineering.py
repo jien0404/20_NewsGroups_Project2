@@ -13,6 +13,16 @@ def count_vectorize(texts, max_features=5000):
     features = vectorizer.fit_transform(texts)
     return features, vectorizer
 
+def tfidf_vectorize_ngrams(texts, max_features=5000):
+    vectorizer = TfidfVectorizer(max_features=max_features, stop_words='english', ngram_range=(1, 2))  # Thêm n-grams
+    features = vectorizer.fit_transform(texts)
+    return features, vectorizer
+
+def count_vectorize_ngrams(texts, max_features=5000):
+    vectorizer = CountVectorizer(max_features=max_features, stop_words='english', ngram_range=(1, 2))  # Thêm n-grams
+    features = vectorizer.fit_transform(texts)
+    return features, vectorizer
+
 if __name__ == "__main__":
     # Test nhanh với dữ liệu giả lập
     sample_texts = ["This is a sample text", "Machine learning is amazing", "Natural language processing with Python"]
