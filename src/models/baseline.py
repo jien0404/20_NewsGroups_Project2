@@ -44,10 +44,10 @@ models = {
 
 # GridSearchCV: Danh sách tham số cho từng mô hình
 param_grids = {
-    "Naive Bayes": {"alpha": [0.1, 0.5, 1.0, 2.0]},
+    "Naive Bayes": {"alpha": [35.5, 40.0, 45.0]},
     "Random Forest": {"n_estimators": [50, 100, 200], "max_depth": [10, 20, None]},
-    "KNN": {"n_neighbors": [3, 5, 7, 9]},
-    "SVM": {"C": [0.1, 1, 10], "kernel": ["linear", "rbf"]},
+    "KNN": {"n_neighbors": [3, 5, 7]},
+    "SVM": {"C": [0.5, 0.7, 1.0], "kernel": ["linear", "rbf"]},
 }
 
 # Lưu kết quả đánh giá
